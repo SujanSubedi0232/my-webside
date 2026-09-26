@@ -2,8 +2,89 @@ html {
   scroll-padding-top: 84px;
 }
 
+:root {
+  --accent-coral: #d9634f;
+  --accent-blue: #39859a;
+  --accent-gold: #bd8422;
+  --tint-coral: #f7e4dd;
+  --tint-blue: #deedf0;
+  --tint-gold: #f5ebd4;
+}
+
+:root.dark {
+  --accent-coral: #f08a73;
+  --accent-blue: #76bbca;
+  --accent-gold: #e3b85e;
+  --tint-coral: #422d2a;
+  --tint-blue: #26383c;
+  --tint-gold: #3c3527;
+}
+
 body {
   line-height: 1.65;
+}
+
+.hero {
+  background-image:
+    radial-gradient(ellipse at 8% 12%, color-mix(in srgb, var(--tint-blue) 58%, transparent), transparent 38%),
+    radial-gradient(ellipse at 94% 84%, color-mix(in srgb, var(--tint-coral) 48%, transparent), transparent 34%);
+}
+
+.mini-card:nth-child(3n + 1),
+.skill-card:nth-child(3n + 1),
+.education-card:nth-child(3n + 1) {
+  border-color: var(--accent-blue);
+}
+
+.mini-card:nth-child(3n + 2),
+.skill-card:nth-child(3n + 2),
+.education-card:nth-child(3n + 2) {
+  border-color: var(--accent-coral);
+}
+
+.mini-card:nth-child(3n),
+.skill-card:nth-child(3n),
+.education-card:nth-child(3n) {
+  border-color: var(--accent-gold);
+}
+
+.mini-card:nth-child(3n + 1) span,
+.project-card:nth-child(3n + 1) .project-number {
+  color: var(--accent-blue);
+}
+
+.mini-card:nth-child(3n + 2) span,
+.project-card:nth-child(3n + 2) .project-number {
+  color: var(--accent-coral);
+}
+
+.mini-card:nth-child(3n) span,
+.project-card:nth-child(3n) .project-number {
+  color: var(--accent-gold);
+}
+
+.project-card:nth-child(3n + 1) {
+  background: color-mix(in srgb, var(--tint-blue) 34%, var(--surface));
+}
+
+.project-card:nth-child(3n + 2) {
+  background: color-mix(in srgb, var(--tint-coral) 34%, var(--surface));
+}
+
+.project-card:nth-child(3n) {
+  background: color-mix(in srgb, var(--tint-gold) 34%, var(--surface));
+}
+
+.tag-list span:nth-child(3n + 1) {
+  border-color: color-mix(in srgb, var(--accent-blue) 48%, var(--line));
+}
+
+.tag-list span:nth-child(3n + 2) {
+  border-color: color-mix(in srgb, var(--accent-coral) 48%, var(--line));
+}
+
+.tag-list span:nth-child(3n) {
+  border-color: color-mix(in srgb, var(--accent-gold) 48%, var(--line));
 }
 
 :where(a, button, input, textarea):focus-visible,
