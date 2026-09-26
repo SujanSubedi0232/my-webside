@@ -1,0 +1,121 @@
+html {
+  scroll-padding-top: 84px;
+}
+
+body {
+  line-height: 1.65;
+}
+
+:where(a, button, input, textarea):focus-visible,
+section:focus-visible {
+  outline: 3px solid var(--accent-dark);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 50;
+  top: 12px;
+  left: 12px;
+  padding: 10px 16px;
+  transform: translateY(-160%);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.nav-links a,
+.socials a,
+.contact-details a {
+  transition: color 160ms ease;
+}
+
+.nav-links a:focus-visible,
+.socials a:focus-visible,
+.contact-details a:focus-visible {
+  color: var(--accent-dark);
+}
+
+.icon-button,
+.menu-button {
+  width: 42px;
+  height: 42px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.contact-form textarea {
+  min-height: 140px;
+}
+
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible {
+  border-color: var(--accent-dark);
+}
+
+.contact-form .button {
+  justify-self: start;
+  min-height: 48px;
+}
+
+@media (max-width: 800px) {
+  .nav {
+    padding: 14px 20px;
+  }
+
+  .nav-links {
+    gap: 18px;
+    padding: 24px;
+  }
+
+  .nav-links a {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .hero-actions {
+    flex-wrap: wrap;
+  }
+
+  .button {
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
