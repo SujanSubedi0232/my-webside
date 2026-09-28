@@ -1,14 +1,22 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-import { additionalSkills, education, experiences, profile, projects, skillGroups, teachingSkills } from "@/lib/data";
+import { FormEvent, useState } from "react";
+import {
+  additionalSkills,
+  education,
+  experiences,
+  profile,
+  projects,
+  skillGroups,
+  teachingSkills,
+} from "@/lib/data";
 
 const nav = ["About", "Skills", "Experience", "Projects", "Education", "Contact"];
-function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: string; children: React.ReactNode }) { return <section id={id} className="section"><div className="section-head"><span className="eyebrow">{eyebrow}</span><h2>{title}</h2></div>{children}</section>; }
-function ThemeToggle() { const [dark, setDark] = useState(false); useEffect(() => { const next = localStorage.getItem("theme") === "dark"; setDark(next); document.documentElement.classList.toggle("dark", next); }, []); const toggle = () => { const next = !dark; setDark(next); document.documentElement.classList.toggle("dark", next); localStorage.setItem("theme", next ? "dark" : "light"); }; return <button className="icon-button" onClick={toggle} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} title={dark ? "Switch to light theme" : "Switch to dark theme"}>{dark ? "☼" : "☾"}</button>; }
 
 export default function Home() {
-  const [menu, setMenu] = useState(false); const [sent, setSent] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [sent, setSent] = useState(false);
+
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -20,16 +28,276 @@ export default function Home() {
     window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
     setSent(true);
   };
-  return <main>
-    <a className="skip-link" href="#home">Skip to content</a>
-    <nav className="nav" aria-label="Primary navigation"><a href="#home" className="brand">SUJAN<span>.</span></a><div id="primary-navigation" className={`nav-links ${menu ? "open" : ""}`}>{nav.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenu(false)}>{item}</a>)}<a className="cv-link" href={profile.cv} download>Download CV</a></div><div className="nav-actions"><ThemeToggle /><button className="menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu} aria-controls="primary-navigation" aria-label={menu ? "Close navigation menu" : "Open navigation menu"}>{menu ? "×" : "☰"}</button></div></nav>
-    <section id="home" className="hero" tabIndex={-1}><div className="hero-copy"><p className="eyebrow">HELLO, I&apos;M</p><h1>Sujan <em>Subedi</em></h1><p className="hero-title">Computer Teacher <span>/</span> Front-End Developer</p><p className="hero-summary">{profile.summary}</p><div className="hero-actions"><a className="button primary" href="#projects">View My Work <span>↗</span></a><a className="button secondary" href="#contact">Contact Me</a></div><div className="socials"><a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a></div></div><div className="hero-art"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="profile-card"><div className="card-top"><span className="status-dot" /> Available for meaningful work</div><div className="monogram">SS</div><p className="card-name">{profile.name}</p><p>Computer Teacher</p><p>Front-End Developer</p><div className="card-location">⌖ {profile.location}</div></div></div></section>
-    <Section id="about" eyebrow="01 / ABOUT" title="A teacher who builds." ><div className="about-grid"><p className="lead">{profile.about}</p><div className="mini-grid">{[["Teaching", "Practical computer science education."], ["Programming", "Python, JavaScript, TypeScript and React.js."], ["Web Development", "Responsive, user-friendly applications."]].map(([title, text]) => <article className="mini-card" key={title}><span>0{title === "Teaching" ? "1" : title === "Programming" ? "2" : "3"}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></Section>
-    <Section id="skills" eyebrow="02 / CAPABILITIES" title="Tools I work with."><div className="skill-grid">{skillGroups.map((group) => <article className="skill-card" key={group.title}><h3>{group.title}</h3><div className="tag-list">{group.items.map((item) => <span key={item}>{item}</span>)}</div></article>)}</div></Section>
-    <Section id="experience" eyebrow="03 / EXPERIENCE" title="Where I&apos;ve contributed."><div className="timeline">{experiences.map((item) => <article className="timeline-item" key={item.role + item.organization}><div className="timeline-marker" /><div><p className="period">{item.period}</p><h3>{item.role}</h3><p className="organization">{item.organization}{item.location && ` · ${item.location}`}</p><ul>{item.points.map((point) => <li key={point}>{point}</li>)}</ul></div></article>)}</div></Section>
-    <Section id="projects" eyebrow="04 / SELECTED WORK" title="Projects with purpose."><div className="project-grid">{projects.map((project, index) => <article className="project-card" key={project.name}><div className="project-number">0{index + 1}</div><p className="period">{project.category}</p><h3>{project.name}</h3><p>{project.description}</p><div className="tag-list">{project.technologies.map((item) => <span key={item}>{item}</span>)}</div><ul>{project.features.map((feature) => <li key={feature}>{feature}</li>)}</ul></article>)}</div></Section>
-    <Section id="education" eyebrow="05 / EDUCATION" title="The foundation."><div className="education-grid">{education.map((item) => <article className="education-card" key={item.degree}><span className="edu-mark">✦</span><p className="period">{item.short || "HIGHER SECONDARY EDUCATION"}</p><h3>{item.degree}</h3><p>{item.school}</p><p>{item.detail}</p></article>)}</div><div className="teaching-strip"><div><p className="eyebrow">TEACHING SKILLS</p><h3>Making technical ideas feel tangible.</h3></div><div className="tag-list">{teachingSkills.map((item) => <span key={item}>{item}</span>)}</div></div><div className="additional"><p className="eyebrow">ADDITIONAL SKILLS</p><div className="tag-list">{additionalSkills.map((item) => <span key={item}>{item}</span>)}</div></div></Section>
-    <Section id="contact" eyebrow="06 / CONTACT" title="Let&apos;s work together."><div className="contact-grid"><div><p className="lead">Have a project, teaching opportunity, or collaboration in mind? Feel free to get in touch.</p><div className="contact-details"><a href={`mailto:${profile.email}`}><small>Email</small>{profile.email}</a><a href={`tel:${profile.phone}`}><small>Phone</small>{profile.phone}</a><p><small>Location</small>{profile.location}</p></div><div className="socials"><a href={`mailto:${profile.email}`}>Email Me ↗</a><a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a></div></div><form className="contact-form" onSubmit={submit}><label htmlFor="contact-name">Name<input id="contact-name" name="name" autoComplete="name" required /></label><label htmlFor="contact-email">Email<input id="contact-email" type="email" name="email" autoComplete="email" required /></label><label htmlFor="contact-message">Message<textarea id="contact-message" name="message" rows={5} required /></label><button className="button primary" type="submit">{sent ? "Open email draft ↗" : "Send Message ↗"}</button>{sent && <p className="success" role="status">Your email draft is ready. Review it in your email app, then send it. Your message is still here if you need to try again.</p>}</form></div></Section>
-    <footer><a href="#home" className="brand">SUJAN<span>.</span></a><p>© 2026 Sujan Subedi. All rights reserved.</p><div className="socials"><a href={profile.github}>GitHub</a><a href={profile.linkedin}>LinkedIn</a><a href={`mailto:${profile.email}`}>Email</a></div></footer>
-  </main>;
+
+  return (
+    <main>
+      <nav className="navbar" aria-label="Primary navigation">
+        <div className="container nav-content">
+          <a href="#home" className="logo">
+            Sujan<span>.</span>
+          </a>
+
+          <div id="nav-menu" className={`nav-links ${menu ? "show-menu" : ""}`}>
+            {nav.map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenu(false)}>
+                {item}
+              </a>
+            ))}
+            <a href={profile.cv} download>
+              Download CV
+            </a>
+          </div>
+
+          <button
+            className="menu-button"
+            onClick={() => setMenu((prev) => !prev)}
+            aria-expanded={menu}
+            aria-controls="nav-menu"
+            aria-label={menu ? "Close menu" : "Open menu"}
+          >
+            ☰
+          </button>
+        </div>
+      </nav>
+
+      <section id="home" className="hero">
+        <div className="container hero-content">
+          <div className="hero-copy">
+            <p className="small-title">HELLO, I&apos;M</p>
+            <h1>
+              Sujan <span>Subedi</span>
+            </h1>
+            <h2>Computer Teacher | Front-End Developer</h2>
+            <p className="hero-description">{profile.summary}</p>
+
+            <div className="hero-buttons">
+              <a href="#projects" className="primary-btn">
+                View My Work
+              </a>
+              <a href="#contact" className="secondary-btn">
+                Contact Me
+              </a>
+            </div>
+
+            <div className="social-links">
+              <a href={profile.github} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a href={profile.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div className="hero-image">
+            <div className="image-circle">
+              <img src="/profile-photo.svg" alt="Sujan Subedi portrait" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="section">
+        <div className="container">
+          <p className="section-label">ABOUT ME</p>
+          <h2 className="section-title">
+            I build <span>digital experiences</span> with clarity and purpose.
+          </h2>
+
+          <div className="about-grid">
+            <div>
+              <p>{profile.about}</p>
+            </div>
+
+            <div className="about-cards">
+              <div className="info-card">
+                <div className="card-icon">🎓</div>
+                <h3>Teaching</h3>
+                <p>Practical computer science education with clear, student-friendly guidance.</p>
+              </div>
+              <div className="info-card">
+                <div className="card-icon">💻</div>
+                <h3>Programming</h3>
+                <p>Python, JavaScript, TypeScript, and React.js for modern solutions.</p>
+              </div>
+              <div className="info-card">
+                <div className="card-icon">🌐</div>
+                <h3>Web Development</h3>
+                <p>Responsive, user-friendly web applications built for real-world use.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" className="section">
+        <div className="container">
+          <p className="section-label">SKILLS</p>
+          <h2 className="section-title">What I <span>work with</span></h2>
+
+          <div className="skills-grid">
+            {skillGroups.map((group) => (
+              <article className="skill-card" key={group.title}>
+                <strong>{group.title}</strong>
+                <p>{group.items.join(" • ")}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="skill-groups">
+            <div>
+              <h3>Teaching skills</h3>
+              <p>{teachingSkills.join(" • ")}</p>
+            </div>
+            <div>
+              <h3>Additional strengths</h3>
+              <p>{additionalSkills.join(" • ")}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" className="section">
+        <div className="container">
+          <p className="section-label">WORK EXPERIENCE</p>
+          <h2 className="section-title">My <span>experience</span></h2>
+
+          <div className="timeline">
+            {experiences.map((item) => (
+              <article className="timeline-item" key={item.role + item.organization}>
+                <div className="timeline-dot" />
+                <div className="timeline-content">
+                  <span className="timeline-date">{item.period}</span>
+                  <h3>{item.role}</h3>
+                  <h4>
+                    {item.organization}
+                    {item.location ? ` · ${item.location}` : ""}
+                  </h4>
+                  <ul>
+                    {item.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" className="section">
+        <div className="container">
+          <p className="section-label">SELECTED PROJECTS</p>
+          <h2 className="section-title">Projects with <span>purpose</span></h2>
+
+          <div className="projects-grid">
+            {projects.map((project, index) => (
+              <article className="project-card" key={project.name}>
+                <div className="project-number">0{index + 1}</div>
+                <p className="project-type">{project.category}</p>
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+                <div className="project-tags">
+                  {project.technologies.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+                <ul className="project-features">
+                  {project.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="education" className="section">
+        <div className="container">
+          <p className="section-label">EDUCATION</p>
+          <h2 className="section-title">My <span>foundation</span></h2>
+
+          <div className="education-grid">
+            {education.map((item) => (
+              <article className="education-card" key={item.degree}>
+                <div className="education-icon">✦</div>
+                <p className="project-type">{item.short || "HIGHER SECONDARY EDUCATION"}</p>
+                <h3>{item.degree}</h3>
+                <p>{item.school}</p>
+                <p>{item.detail}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="section">
+        <div className="container contact-container">
+          <div>
+            <p className="section-label">CONTACT</p>
+            <h2 className="section-title">Let&apos;s build <span>something useful</span></h2>
+            <p>
+              Have a project, teaching opportunity, or collaboration in mind? I&apos;d love to hear from you.
+            </p>
+
+            <div className="contact-info">
+              <a href={`mailto:${profile.email}`}>Email: {profile.email}</a>
+              <a href={`tel:${profile.phone}`}>Phone: {profile.phone}</a>
+              <span>Location: {profile.location}</span>
+            </div>
+
+            <div className="contact-buttons">
+              <a href={`mailto:${profile.email}`} className="primary-btn">
+                Email Me
+              </a>
+              <a href={profile.github} target="_blank" rel="noreferrer" className="secondary-btn">
+                GitHub
+              </a>
+            </div>
+          </div>
+
+          <form className="contact-form" onSubmit={submit}>
+            <label htmlFor="contact-name">
+              Name
+              <input id="contact-name" name="name" autoComplete="name" required />
+            </label>
+            <label htmlFor="contact-email">
+              Email
+              <input id="contact-email" type="email" name="email" autoComplete="email" required />
+            </label>
+            <label htmlFor="contact-message">
+              Message
+              <textarea id="contact-message" name="message" rows={5} required />
+            </label>
+            <button type="submit" className="primary-btn">
+              {sent ? "Open email draft" : "Send Message"}
+            </button>
+            {sent && <p className="success" role="status">Your email draft is ready.</p>}
+          </form>
+        </div>
+      </section>
+
+      <footer>
+        <div className="container footer-content">
+          <div>
+            <a href="#home" className="logo">
+              Sujan<span>.</span>
+            </a>
+            <p>© 2026 Sujan Subedi</p>
+          </div>
+          <div className="footer-links">
+            <a href={profile.github} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href={profile.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a href={`mailto:${profile.email}`}>Email</a>
+          </div>
+        </div>
+        <div className="copyright">Built with care for learning and development.</div>
+      </footer>
+    </main>
+  );
 }
